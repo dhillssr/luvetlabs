@@ -896,6 +896,100 @@
     }
     .form-success.visible { display: block; }
 
+    /* ── FILE UPLOAD ── */
+    .file-upload-area {
+      border: 2px dashed rgba(44,46,51,0.15);
+      border-radius: 6px;
+      background: var(--ivory);
+      padding: 28px 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+      position: relative;
+    }
+    .file-upload-area:hover,
+    .file-upload-area.dragover {
+      border-color: var(--teal);
+      background: rgba(30,95,107,0.04);
+    }
+    .file-upload-area input[type="file"] {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      cursor: pointer;
+      width: 100%;
+      height: 100%;
+    }
+    .file-upload-icon {
+      width: 36px;
+      height: 36px;
+      margin: 0 auto 10px;
+      color: var(--stone-light);
+    }
+    .file-upload-text {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--charcoal);
+      margin-bottom: 4px;
+    }
+    .file-upload-text span {
+      color: var(--teal);
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+    .file-upload-hint {
+      font-size: 12px;
+      color: var(--stone-light);
+    }
+    .file-previews {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 12px;
+    }
+    .file-preview {
+      position: relative;
+      width: 72px;
+      height: 72px;
+      border-radius: 4px;
+      overflow: hidden;
+      border: 1px solid rgba(44,46,51,0.1);
+      flex-shrink: 0;
+    }
+    .file-preview img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .file-preview-remove {
+      position: absolute;
+      top: 3px;
+      right: 3px;
+      width: 18px;
+      height: 18px;
+      background: rgba(44,46,51,0.7);
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 11px;
+      line-height: 1;
+      padding: 0;
+    }
+    .file-preview-name {
+      width: 72px;
+      font-size: 10px;
+      color: var(--stone);
+      text-align: center;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      margin-top: 4px;
+    }
+
     /* ── MOBILE ── */
     @media (max-width: 900px) {
       nav { padding: 0 24px; }
@@ -1253,6 +1347,18 @@
             <label class="form-label" for="message">Tell us about the project</label>
             <textarea class="form-textarea" id="message" placeholder="Describe the part or project. What's broken, what do you need, what dimensions matter? Don't worry about being technical — we'll ask the right questions."></textarea>
           </div>
+          <div class="form-group">
+            <label class="form-label">Photos <span style="font-weight:400;color:var(--stone-light);">— optional, up to 5</span></label>
+            <div class="file-upload-area" id="file-upload-area">
+              <input type="file" id="photo-upload" accept="image/*" multiple />
+              <svg class="file-upload-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/>
+              </svg>
+              <div class="file-upload-text"><span>Choose photos</span> or drag & drop</div>
+              <div class="file-upload-hint">JPG, PNG, HEIC, WEBP — max 10 MB each</div>
+            </div>
+            <div class="file-previews" id="file-previews"></div>
+          </div>
           <button type="submit" class="form-submit">Send Request →</button>
           <div class="form-success" id="form-success">
             Got it — we'll review your project and reply within 24 hours. Check your inbox (and spam, just in case).
@@ -1315,6 +1421,72 @@
       });
     }, { threshold: 0.12 });
     revealEls.forEach(el => observer.observe(el));
+
+    // ── FILE UPLOAD ──
+    const uploadArea = document.getElementById('file-upload-area');
+    const fileInput = document.getElementById('photo-upload');
+    const previewsContainer = document.getElementById('file-previews');
+    let selectedFiles = [];
+
+    function renderPreviews() {
+      previewsContainer.innerHTML = '';
+      selectedFiles.forEach((file, i) => {
+        const wrapper = document.createElement('div');
+        wrapper.style.display = 'flex';
+        wrapper.style.flexDirection = 'column';
+        wrapper.style.alignItems = 'center';
+
+        const preview = document.createElement('div');
+        preview.className = 'file-preview';
+
+        const img = document.createElement('img');
+        img.src = URL.createObjectURL(file);
+        img.onload = () => URL.revokeObjectURL(img.src);
+        preview.appendChild(img);
+
+        const removeBtn = document.createElement('button');
+        removeBtn.className = 'file-preview-remove';
+        removeBtn.type = 'button';
+        removeBtn.innerHTML = '✕';
+        removeBtn.setAttribute('aria-label', 'Remove ' + file.name);
+        removeBtn.addEventListener('click', () => {
+          selectedFiles.splice(i, 1);
+          renderPreviews();
+        });
+        preview.appendChild(removeBtn);
+
+        const name = document.createElement('div');
+        name.className = 'file-preview-name';
+        name.textContent = file.name;
+
+        wrapper.appendChild(preview);
+        wrapper.appendChild(name);
+        previewsContainer.appendChild(wrapper);
+      });
+    }
+
+    function addFiles(files) {
+      const allowed = Array.from(files).filter(f => f.type.startsWith('image/'));
+      const remaining = 5 - selectedFiles.length;
+      selectedFiles = selectedFiles.concat(allowed.slice(0, remaining));
+      renderPreviews();
+    }
+
+    fileInput.addEventListener('change', () => {
+      addFiles(fileInput.files);
+      fileInput.value = '';
+    });
+
+    uploadArea.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      uploadArea.classList.add('dragover');
+    });
+    uploadArea.addEventListener('dragleave', () => uploadArea.classList.remove('dragover'));
+    uploadArea.addEventListener('drop', (e) => {
+      e.preventDefault();
+      uploadArea.classList.remove('dragover');
+      addFiles(e.dataTransfer.files);
+    });
 
     // ── CONTACT FORM ──
     const form = document.getElementById('contact-form');
