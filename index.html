@@ -1324,16 +1324,16 @@
           <div class="form-row">
             <div class="form-group">
               <label class="form-label" for="name">Name</label>
-              <input class="form-input" type="text" id="name" placeholder="Your name" />
+              <input class="form-input" type="text" id="name" name="name" placeholder="Your name" required />
             </div>
             <div class="form-group">
               <label class="form-label" for="email">Email</label>
-              <input class="form-input" type="email" id="email" placeholder="you@example.com" />
+              <input class="form-input" type="email" id="email" name="email" placeholder="you@example.com" required />
             </div>
           </div>
           <div class="form-group">
             <label class="form-label" for="project-type">Project type</label>
-            <select class="form-select" id="project-type">
+            <select class="form-select" id="project-type" name="project_type">
               <option value="">Select a category...</option>
               <option>Repair Part</option>
               <option>Inventor Prototype</option>
@@ -1345,7 +1345,7 @@
           </div>
           <div class="form-group">
             <label class="form-label" for="message">Tell us about the project</label>
-            <textarea class="form-textarea" id="message" placeholder="Describe the part or project. What's broken, what do you need, what dimensions matter? Don't worry about being technical — we'll ask the right questions."></textarea>
+            <textarea class="form-textarea" id="message" name="message" placeholder="Describe the part or project. What's broken, what do you need, what dimensions matter? Don't worry about being technical — we'll ask the right questions."></textarea>
           </div>
           <div class="form-group">
             <label class="form-label">Photos <span style="font-weight:400;color:var(--stone-light);">— optional, up to 5</span></label>
@@ -1491,15 +1491,34 @@
     // ── CONTACT FORM ──
     const form = document.getElementById('contact-form');
     const success = document.getElementById('form-success');
-    form.addEventListener('submit', (e) => {
+    form.addEventListener('submit', async (e) => {
       e.preventDefault();
       const submit = form.querySelector('.form-submit');
       submit.textContent = 'Sending...';
       submit.disabled = true;
-      setTimeout(() => {
-        submit.style.display = 'none';
-        success.classList.add('visible');
-      }, 900);
+
+      const data = new FormData(form);
+      selectedFiles.forEach(file => data.append('photo', file));
+
+      try {
+        const res = await fetch('https://formspree.io/f/mykoezej', {
+          method: 'POST',
+          body: data,
+          headers: { Accept: 'application/json' }
+        });
+        if (res.ok) {
+          submit.style.display = 'none';
+          success.classList.add('visible');
+        } else {
+          submit.textContent = 'Send Request →';
+          submit.disabled = false;
+          alert('Something went wrong — please try again or email us directly at hello@luvetlabs.com');
+        }
+      } catch {
+        submit.textContent = 'Send Request →';
+        submit.disabled = false;
+        alert('Network error — please check your connection and try again.');
+      }
     });
 
     // ── SMOOTH NAV ──
