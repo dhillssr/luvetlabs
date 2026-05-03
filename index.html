@@ -1489,37 +1489,66 @@
     });
 
     // ── CONTACT FORM ──
+    const CLOUDINARY_CLOUD = 'dezu0hcet';
+    const CLOUDINARY_PRESET = 'luvetlabs';
+
+    async function uploadToCloudinary(file) {
+      const fd = new FormData();
+      fd.append('file', file);
+      fd.append('upload_preset', CLOUDINARY_PRESET);
+      const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/image/upload`, {
+        method: 'POST',
+        body: fd
+      });
+      if (!res.ok) throw new Error('Image upload failed');
+      const json = await res.json();
+      return json.secure_url;
+    }
+
     const form = document.getElementById('contact-form');
     const success = document.getElementById('form-success');
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
       const submit = form.querySelector('.form-submit');
-      submit.textContent = 'Sending...';
       submit.disabled = true;
 
-      const data = new FormData(form);
-      selectedFiles.forEach(file => data.append('upload', file));
-
       try {
+        // Upload images to Cloudinary first
+        let photoUrls = [];
+        if (selectedFiles.length > 0) {
+          submit.textContent = `Uploading photo${selectedFiles.length > 1 ? 's' : ''}...`;
+          photoUrls = await Promise.all(selectedFiles.map(uploadToCloudinary));
+        }
+
+        submit.textContent = 'Sending...';
+
+        // Build FormData for Formspree (text fields only)
+        const data = new FormData(form);
+        // Remove any accidental file entries from the form's file input
+        data.delete('upload');
+        // Attach photo links as a readable field
+        if (photoUrls.length > 0) {
+          data.append('photos', photoUrls.join('\n'));
+        }
+
         const res = await fetch('https://formspree.io/f/mykoezej', {
           method: 'POST',
           body: data,
           headers: { Accept: 'application/json' }
         });
+
         if (res.ok) {
           submit.style.display = 'none';
           success.classList.add('visible');
         } else {
           const body = await res.json().catch(() => ({}));
-          const msg = body.error || (body.errors && body.errors.map(e => e.message).join(', ')) || 'Unknown error';
-          submit.textContent = 'Send Request →';
-          submit.disabled = false;
-          alert('Submission failed: ' + msg + '\n\nOr email us directly at hello@luvetlabs.com');
+          const msg = body.error || (body.errors && body.errors.map(err => err.message).join(', ')) || 'Unknown error';
+          throw new Error(msg);
         }
-      } catch {
+      } catch (err) {
         submit.textContent = 'Send Request →';
         submit.disabled = false;
-        alert('Network error — please check your connection and try again.');
+        alert('Something went wrong: ' + err.message + '\n\nOr email us directly at hello@luvetlabs.com');
       }
     });
 
