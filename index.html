@@ -1,0 +1,1250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Luvet Labs — Custom 3D Printing & CAD Design · St. Paul, MN</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --teal: #1E5F6B;
+      --teal-dark: #174d58;
+      --teal-light: #2a7585;
+      --sand: #E8DFD0;
+      --amber: #D97548;
+      --amber-dark: #c4622f;
+      --ivory: #FAF7F2;
+      --charcoal: #2C2E33;
+      --stone: #7A7973;
+      --stone-light: #a09e97;
+      --ff-display: 'Manrope', sans-serif;
+      --ff-body: 'Inter', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--ff-body);
+      background: var(--ivory);
+      color: var(--charcoal);
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      background: var(--ivory);
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.3s, background 0.3s, box-shadow 0.3s;
+      padding: 0 48px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    nav.scrolled {
+      border-color: var(--sand);
+      box-shadow: 0 2px 16px rgba(44,46,51,0.06);
+    }
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: var(--charcoal);
+    }
+    .nav-monogram {
+      width: 36px;
+      height: 36px;
+      background: var(--teal);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--ff-display);
+      font-weight: 800;
+      font-size: 14px;
+      color: var(--ivory);
+      letter-spacing: -0.5px;
+      flex-shrink: 0;
+    }
+    .nav-wordmark {
+      font-family: var(--ff-display);
+      font-weight: 700;
+      font-size: 15px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .nav-wordmark span { color: var(--amber); }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      list-style: none;
+    }
+    .nav-links a {
+      font-family: var(--ff-body);
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--stone);
+      text-decoration: none;
+      letter-spacing: 0.01em;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--teal); }
+    .nav-cta {
+      background: var(--teal);
+      color: var(--ivory) !important;
+      padding: 9px 20px;
+      border-radius: 4px;
+      font-weight: 600 !important;
+      transition: background 0.2s !important;
+    }
+    .nav-cta:hover { background: var(--teal-light) !important; color: var(--ivory) !important; }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      padding-top: 64px;
+    }
+    .hero-left {
+      background: var(--teal);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 80px 64px 80px 80px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-left::before {
+      content: '';
+      position: absolute;
+      top: -60px;
+      right: -60px;
+      width: 280px;
+      height: 280px;
+      border: 40px solid rgba(255,255,255,0.04);
+      border-radius: 50%;
+    }
+    .hero-left::after {
+      content: '';
+      position: absolute;
+      bottom: -40px;
+      left: -40px;
+      width: 200px;
+      height: 200px;
+      border: 28px solid rgba(255,255,255,0.04);
+      border-radius: 50%;
+    }
+    .hero-eyebrow {
+      font-family: var(--ff-body);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(250,247,242,0.5);
+      margin-bottom: 24px;
+    }
+    .hero-headline {
+      font-family: var(--ff-display);
+      font-size: clamp(40px, 4.5vw, 64px);
+      font-weight: 800;
+      line-height: 1.05;
+      color: var(--ivory);
+      margin-bottom: 28px;
+      letter-spacing: -0.02em;
+    }
+    .hero-headline em {
+      font-style: normal;
+      color: var(--amber);
+    }
+    .hero-sub {
+      font-size: 17px;
+      font-weight: 400;
+      line-height: 1.65;
+      color: rgba(250,247,242,0.72);
+      max-width: 420px;
+      margin-bottom: 48px;
+    }
+    .hero-actions {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--amber);
+      color: var(--ivory);
+      font-family: var(--ff-body);
+      font-weight: 600;
+      font-size: 15px;
+      padding: 14px 28px;
+      border-radius: 4px;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.15s;
+      border: none;
+      cursor: pointer;
+    }
+    .btn-primary:hover { background: var(--amber-dark); transform: translateY(-1px); }
+    .btn-ghost {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: transparent;
+      color: rgba(250,247,242,0.8);
+      font-family: var(--ff-body);
+      font-weight: 500;
+      font-size: 15px;
+      padding: 14px 28px;
+      border-radius: 4px;
+      text-decoration: none;
+      border: 1px solid rgba(250,247,242,0.2);
+      transition: border-color 0.2s, color 0.2s;
+      cursor: pointer;
+    }
+    .btn-ghost:hover { border-color: rgba(250,247,242,0.5); color: var(--ivory); }
+    .hero-stats {
+      display: flex;
+      gap: 40px;
+      margin-top: 56px;
+      padding-top: 40px;
+      border-top: 1px solid rgba(250,247,242,0.12);
+    }
+    .hero-stat-num {
+      font-family: var(--ff-display);
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--ivory);
+      letter-spacing: -0.03em;
+    }
+    .hero-stat-num span { color: var(--amber); }
+    .hero-stat-label {
+      font-size: 12px;
+      font-weight: 500;
+      color: rgba(250,247,242,0.5);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      margin-top: 3px;
+    }
+    .hero-right {
+      background: var(--sand);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 80px 64px;
+      position: relative;
+    }
+    .hero-visual {
+      width: 100%;
+      max-width: 400px;
+      aspect-ratio: 4/3;
+      background: repeating-linear-gradient(
+        45deg,
+        rgba(44,46,51,0.04),
+        rgba(44,46,51,0.04) 1px,
+        transparent 1px,
+        transparent 18px
+      );
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      border: 1px solid rgba(44,46,51,0.1);
+    }
+    .hero-visual-label {
+      font-family: var(--ff-body);
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--stone);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      text-align: center;
+      padding: 24px;
+    }
+
+    /* ── SECTION WRAPPER ── */
+    .section { padding: 96px 80px; }
+    .section-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .section-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--amber);
+      margin-bottom: 16px;
+    }
+    .section-title {
+      font-family: var(--ff-display);
+      font-size: clamp(28px, 3vw, 42px);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--charcoal);
+      line-height: 1.1;
+      margin-bottom: 20px;
+    }
+    .section-subtitle {
+      font-size: 17px;
+      line-height: 1.65;
+      color: var(--stone);
+      max-width: 540px;
+    }
+
+    /* ── SERVICES ── */
+    #services { background: var(--ivory); }
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+      margin-top: 64px;
+      background: var(--sand);
+      border: 1px solid var(--sand);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .service-card {
+      background: var(--ivory);
+      padding: 40px 36px;
+      transition: background 0.2s;
+      cursor: default;
+      position: relative;
+    }
+    .service-card:hover { background: #f7f3ec; }
+    .service-icon {
+      width: 44px;
+      height: 44px;
+      background: var(--sand);
+      border-radius: 4px;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+    .service-card:hover .service-icon { background: var(--teal); }
+    .service-icon svg {
+      width: 20px;
+      height: 20px;
+      stroke: var(--teal);
+      fill: none;
+      stroke-width: 1.75;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      transition: stroke 0.2s;
+    }
+    .service-card:hover .service-icon svg { stroke: var(--ivory); }
+    .service-title {
+      font-family: var(--ff-display);
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--charcoal);
+      margin-bottom: 10px;
+      letter-spacing: -0.01em;
+    }
+    .service-desc {
+      font-size: 14px;
+      line-height: 1.65;
+      color: var(--stone);
+    }
+    .service-range {
+      display: inline-block;
+      margin-top: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--teal);
+      letter-spacing: 0.02em;
+      padding: 5px 10px;
+      background: rgba(30,95,107,0.08);
+      border-radius: 3px;
+    }
+
+    /* ── PROCESS ── */
+    #process {
+      background: var(--teal);
+      color: var(--ivory);
+    }
+    #process .section-title { color: var(--ivory); }
+    #process .section-subtitle { color: rgba(250,247,242,0.65); }
+    #process .section-label { color: var(--amber); }
+    .process-steps {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2px;
+      margin-top: 64px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .process-step {
+      background: rgba(30,95,107,0.6);
+      padding: 40px 32px;
+      position: relative;
+      transition: background 0.2s;
+    }
+    .process-step:hover { background: rgba(42,117,133,0.5); }
+    .process-num {
+      font-family: var(--ff-display);
+      font-size: 48px;
+      font-weight: 800;
+      color: rgba(250,247,242,0.12);
+      letter-spacing: -0.04em;
+      line-height: 1;
+      margin-bottom: 20px;
+    }
+    .process-step-title {
+      font-family: var(--ff-display);
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--ivory);
+      margin-bottom: 10px;
+    }
+    .process-step-desc {
+      font-size: 14px;
+      line-height: 1.6;
+      color: rgba(250,247,242,0.6);
+    }
+    .process-step-time {
+      display: inline-block;
+      margin-top: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--amber);
+      letter-spacing: 0.04em;
+    }
+
+    /* ── AUDIENCES ── */
+    #audiences { background: var(--sand); }
+    .audiences-header {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: end;
+      margin-bottom: 64px;
+    }
+    .audience-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    .audience-card {
+      background: var(--ivory);
+      border-radius: 8px;
+      padding: 36px 32px;
+      border: 1px solid rgba(44,46,51,0.07);
+      transition: transform 0.2s, box-shadow 0.2s;
+      cursor: default;
+    }
+    .audience-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(44,46,51,0.1);
+    }
+    .audience-tag {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--amber);
+      margin-bottom: 16px;
+    }
+    .audience-title {
+      font-family: var(--ff-display);
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--charcoal);
+      letter-spacing: -0.02em;
+      margin-bottom: 12px;
+    }
+    .audience-desc {
+      font-size: 14px;
+      line-height: 1.65;
+      color: var(--stone);
+      margin-bottom: 24px;
+    }
+    .audience-examples {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .audience-examples li {
+      font-size: 13px;
+      color: var(--stone);
+      padding-left: 16px;
+      position: relative;
+    }
+    .audience-examples li::before {
+      content: '—';
+      position: absolute;
+      left: 0;
+      color: var(--teal);
+      font-weight: 600;
+    }
+    .audience-budget {
+      margin-top: 24px;
+      padding-top: 20px;
+      border-top: 1px solid var(--sand);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--teal);
+    }
+
+    /* ── ABOUT ── */
+    #about { background: var(--ivory); }
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+    .about-visual {
+      background: repeating-linear-gradient(
+        -45deg,
+        rgba(44,46,51,0.04),
+        rgba(44,46,51,0.04) 1px,
+        transparent 1px,
+        transparent 18px
+      );
+      border-radius: 8px;
+      aspect-ratio: 5/4;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid rgba(44,46,51,0.08);
+      flex-direction: column;
+      gap: 8px;
+    }
+    .about-visual-label {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--stone-light);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .about-body {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+    .about-body p {
+      font-size: 16px;
+      line-height: 1.75;
+      color: var(--stone);
+    }
+    .about-body p strong {
+      color: var(--charcoal);
+      font-weight: 600;
+    }
+    .about-callout {
+      background: var(--sand);
+      border-left: 3px solid var(--amber);
+      padding: 20px 24px;
+      border-radius: 0 4px 4px 0;
+      font-family: var(--ff-display);
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--teal);
+      line-height: 1.4;
+    }
+    .about-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .chip {
+      font-size: 12px;
+      font-weight: 600;
+      padding: 6px 12px;
+      border-radius: 3px;
+      background: rgba(30,95,107,0.08);
+      color: var(--teal);
+      letter-spacing: 0.02em;
+    }
+
+    /* ── CTA BANNER ── */
+    #cta {
+      background: var(--charcoal);
+      padding: 80px;
+    }
+    .cta-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 48px;
+      align-items: center;
+    }
+    .cta-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--amber);
+      margin-bottom: 16px;
+    }
+    .cta-headline {
+      font-family: var(--ff-display);
+      font-size: clamp(26px, 2.8vw, 38px);
+      font-weight: 800;
+      color: var(--ivory);
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+    }
+    .cta-sub {
+      font-size: 16px;
+      color: rgba(250,247,242,0.5);
+      margin-top: 12px;
+      line-height: 1.6;
+    }
+    .cta-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      align-items: flex-end;
+      flex-shrink: 0;
+    }
+    .btn-amber {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--amber);
+      color: var(--ivory);
+      font-family: var(--ff-body);
+      font-weight: 600;
+      font-size: 15px;
+      padding: 16px 32px;
+      border-radius: 4px;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.15s;
+      white-space: nowrap;
+      cursor: pointer;
+      border: none;
+    }
+    .btn-amber:hover { background: var(--amber-dark); transform: translateY(-1px); }
+    .cta-note {
+      font-size: 13px;
+      color: rgba(250,247,242,0.35);
+      text-align: right;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--charcoal);
+      border-top: 1px solid rgba(250,247,242,0.06);
+      padding: 40px 80px;
+    }
+    .footer-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .footer-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .footer-monogram {
+      width: 28px;
+      height: 28px;
+      background: rgba(250,247,242,0.1);
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--ff-display);
+      font-weight: 800;
+      font-size: 11px;
+      color: var(--ivory);
+    }
+    .footer-wordmark {
+      font-family: var(--ff-display);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: rgba(250,247,242,0.5);
+    }
+    .footer-wordmark span { color: var(--amber); }
+    .footer-meta {
+      font-size: 12px;
+      color: rgba(250,247,242,0.3);
+    }
+    .footer-links {
+      display: flex;
+      gap: 24px;
+    }
+    .footer-links a {
+      font-size: 13px;
+      color: rgba(250,247,242,0.4);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-links a:hover { color: rgba(250,247,242,0.8); }
+
+    /* ── SCROLL REVEAL ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.4s; }
+
+    /* ── CONTACT FORM ── */
+    #contact {
+      background: var(--sand);
+      padding: 96px 80px;
+    }
+    .contact-grid {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: start;
+    }
+    .contact-info {
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
+    .contact-item {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .contact-item-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--stone-light);
+    }
+    .contact-item-value {
+      font-family: var(--ff-display);
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--charcoal);
+    }
+    .contact-item-value a {
+      color: var(--teal);
+      text-decoration: none;
+    }
+    .contact-item-value a:hover { text-decoration: underline; }
+    .form {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .form-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--charcoal);
+      letter-spacing: 0.02em;
+    }
+    .form-input, .form-select, .form-textarea {
+      background: var(--ivory);
+      border: 1px solid rgba(44,46,51,0.12);
+      border-radius: 4px;
+      padding: 11px 14px;
+      font-family: var(--ff-body);
+      font-size: 14px;
+      color: var(--charcoal);
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      -webkit-appearance: none;
+    }
+    .form-input:focus, .form-select:focus, .form-textarea:focus {
+      border-color: var(--teal);
+      box-shadow: 0 0 0 3px rgba(30,95,107,0.1);
+    }
+    .form-textarea {
+      resize: vertical;
+      min-height: 120px;
+    }
+    .form-select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4 6l4 4 4-4' stroke='%237A7973' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      background-size: 16px;
+      padding-right: 36px;
+      cursor: pointer;
+    }
+    .form-submit {
+      background: var(--teal);
+      color: var(--ivory);
+      font-family: var(--ff-body);
+      font-weight: 600;
+      font-size: 15px;
+      padding: 14px 32px;
+      border-radius: 4px;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s;
+      align-self: flex-start;
+    }
+    .form-submit:hover { background: var(--teal-light); transform: translateY(-1px); }
+    .form-success {
+      display: none;
+      background: rgba(30,95,107,0.08);
+      border: 1px solid rgba(30,95,107,0.2);
+      border-radius: 6px;
+      padding: 20px 24px;
+      font-size: 15px;
+      color: var(--teal);
+      font-weight: 500;
+      line-height: 1.5;
+    }
+    .form-success.visible { display: block; }
+
+    /* ── MOBILE ── */
+    @media (max-width: 900px) {
+      nav { padding: 0 24px; }
+      .nav-links { display: none; }
+      #hero { grid-template-columns: 1fr; }
+      .hero-left { padding: 60px 32px; min-height: 70vh; }
+      .hero-right { display: none; }
+      .section { padding: 64px 24px; }
+      .services-grid { grid-template-columns: 1fr; }
+      .process-steps { grid-template-columns: 1fr 1fr; }
+      .audience-cards { grid-template-columns: 1fr; }
+      .audiences-header { grid-template-columns: 1fr; gap: 24px; }
+      .about-grid { grid-template-columns: 1fr; }
+      .about-visual { display: none; }
+      .contact-grid { grid-template-columns: 1fr; gap: 40px; }
+      #contact { padding: 64px 24px; }
+      .form-row { grid-template-columns: 1fr; }
+      .cta-inner { grid-template-columns: 1fr; }
+      .cta-actions { align-items: flex-start; }
+      #cta { padding: 64px 24px; }
+      footer { padding: 32px 24px; }
+      .footer-inner { flex-direction: column; gap: 16px; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav id="main-nav">
+    <a href="#hero" class="nav-logo">
+      <div class="nav-monogram">LL</div>
+      <span class="nav-wordmark">LUVET <span>·</span> LABS</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#services">Services</a></li>
+      <li><a href="#process">Process</a></li>
+      <li><a href="#audiences">Who We Serve</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#contact" class="nav-cta">Get a Quote</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-left">
+      <div class="hero-eyebrow">St. Paul, Minnesota · CAD-Native Shop</div>
+      <h1 class="hero-headline">
+        Designed<br/>with care.<br/><em>Made to last.</em>
+      </h1>
+      <p class="hero-sub">
+        Custom 3D printing, CAD design, and rapid prototyping for the jobs
+        the big additive manufacturers won't touch. One part or a hundred — we're here for it.
+      </p>
+      <div class="hero-actions">
+        <a href="#contact" class="btn-primary">
+          Get a Quote
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 8h10M9 4l4 4-4 4"/>
+          </svg>
+        </a>
+        <a href="#services" class="btn-ghost">See Our Work</a>
+      </div>
+      <div class="hero-stats">
+        <div>
+          <div class="hero-stat-num">24<span>hr</span></div>
+          <div class="hero-stat-label">Quote promise</div>
+        </div>
+        <div>
+          <div class="hero-stat-num">3<span>–7</span></div>
+          <div class="hero-stat-label">Days to delivery</div>
+        </div>
+        <div>
+          <div class="hero-stat-num">3<span>×</span></div>
+          <div class="hero-stat-label">Bambu P1S printers</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div style="width:100%;max-width:400px;position:relative;">
+        <div class="hero-visual">
+          <div class="hero-visual-label">
+            product photography<br/>printed parts + workspace
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section id="services" class="section">
+    <div class="section-inner">
+      <div class="reveal">
+        <div class="section-label">What We Do</div>
+        <h2 class="section-title">One shop.<br/>Every weird job.</h2>
+        <p class="section-subtitle">We design in Fusion 360 and print in-house on three Bambu P1S machines with full AMS multi-material capability.</p>
+      </div>
+      <div class="services-grid reveal reveal-delay-1">
+        <div class="service-card">
+          <div class="service-icon">
+            <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
+          </div>
+          <div class="service-title">Repair Parts</div>
+          <p class="service-desc">Broken appliance knob, vintage dial, drawer clip, snowblower auger piece — if it can be measured, we can print it. Send a photo and we'll quote within a day.</p>
+          <span class="service-range">Typical: $40 – $200</span>
+        </div>
+        <div class="service-card">
+          <div class="service-icon">
+            <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          </div>
+          <div class="service-title">Inventor Prototyping</div>
+          <p class="service-desc">1–3 design iterations of your product idea, without Protolabs' minimums or 2-week lead times. We design with you, not just for you.</p>
+          <span class="service-range">Typical: $200 – $1,200</span>
+        </div>
+        <div class="service-card">
+          <div class="service-icon">
+            <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+          </div>
+          <div class="service-title">IT & Homelab Hardware</div>
+          <p class="service-desc">Custom rack mounts (1U/2U/half-rack), cable management, Pi enclosures, AP brackets, UPS mounts. We speak the language.</p>
+          <span class="service-range">Typical: $100 – $1,500</span>
+        </div>
+        <div class="service-card">
+          <div class="service-icon">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
+          </div>
+          <div class="service-title">CAD Design Services</div>
+          <p class="service-desc">Don't have a file? We design from scratch or reverse-engineer from photos, dimensions, or a broken original. Fusion 360 native — real engineering, not hobbyist files.</p>
+          <span class="service-range">Design fee: $45 – $200</span>
+        </div>
+        <div class="service-card">
+          <div class="service-icon">
+            <svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+          </div>
+          <div class="service-title">Small-Batch Runs</div>
+          <p class="service-desc">5–50 units for Etsy sellers, local product launches, and small businesses that need more than one but less than a factory minimum.</p>
+          <span class="service-range">Per-unit pricing on quote</span>
+        </div>
+        <div class="service-card">
+          <div class="service-icon">
+            <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </div>
+          <div class="service-title">Branded Client Swag</div>
+          <p class="service-desc">MSPs and IT shops: branded enclosures, logo desk accessories, and custom hardware for client installs that look like you designed them on purpose.</p>
+          <span class="service-range">Quote per project</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROCESS -->
+  <section id="process" class="section">
+    <div class="section-inner">
+      <div class="reveal">
+        <div class="section-label">How It Works</div>
+        <h2 class="section-title">Quote in 24 hours.<br/>Part in your hands by Friday.</h2>
+        <p class="section-subtitle">A real human on every project. No automated instant quotes, no hidden revision fees.</p>
+      </div>
+      <div class="process-steps">
+        <div class="process-step reveal reveal-delay-1">
+          <div class="process-num">01</div>
+          <div class="process-step-title">Send us a photo</div>
+          <p class="process-step-desc">Email or message a photo of the broken part, a sketch, or a description. That's it. No 3D file required.</p>
+          <span class="process-step-time">Takes 2 minutes</span>
+        </div>
+        <div class="process-step reveal reveal-delay-2">
+          <div class="process-num">02</div>
+          <div class="process-step-title">Get a real quote</div>
+          <p class="process-step-desc">We review, ask any questions, and reply with a flat quote. No surprises, no vague estimates.</p>
+          <span class="process-step-time">Within 24 hours</span>
+        </div>
+        <div class="process-step reveal reveal-delay-3">
+          <div class="process-num">03</div>
+          <div class="process-step-title">We design & print</div>
+          <p class="process-step-desc">CAD design (if needed), material selection, and production on our Bambu P1S machines. We'll send progress photos.</p>
+          <span class="process-step-time">1–5 days</span>
+        </div>
+        <div class="process-step reveal reveal-delay-4">
+          <div class="process-num">04</div>
+          <div class="process-step-title">Delivered to you</div>
+          <p class="process-step-desc">Local pickup in St. Paul, or shipped nationwide. Most jobs are in your hands within 3–7 days of approval.</p>
+          <span class="process-step-time">3–7 days total</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- AUDIENCES -->
+  <section id="audiences" class="section">
+    <div class="section-inner">
+      <div class="audiences-header">
+        <div class="reveal">
+          <div class="section-label">Who We Serve</div>
+          <h2 class="section-title">Built for the jobs<br/>Big Additive won't bid.</h2>
+        </div>
+        <p class="section-subtitle reveal reveal-delay-1">Whether you're fixing something that broke, building something new, or spec'ing out a rack — we have done your job before.</p>
+      </div>
+      <div class="audience-cards">
+        <div class="audience-card reveal reveal-delay-1">
+          <div class="audience-tag">Homeowners & Makers</div>
+          <div class="audience-title">Repair without replacing</div>
+          <p class="audience-desc">Send us a photo of what's broken. We'll make the part. No minimum order, no design skills required.</p>
+          <ul class="audience-examples">
+            <li>Appliance knobs & dials</li>
+            <li>Vintage stereo & turntable parts</li>
+            <li>Drawer clips & furniture hardware</li>
+            <li>Outdoor equipment components</li>
+          </ul>
+          <div class="audience-budget">Typical: $40 – $200</div>
+        </div>
+        <div class="audience-card reveal reveal-delay-2">
+          <div class="audience-tag">Inventors & Etsy Sellers</div>
+          <div class="audience-title">Prototype without the premium</div>
+          <p class="audience-desc">Iterate fast. We handle the design engineering so you can focus on your product, not the toolchain.</p>
+          <ul class="audience-examples">
+            <li>Product concept prototypes</li>
+            <li>1–3 design iterations</li>
+            <li>Small-batch Etsy runs</li>
+            <li>Pre-production samples</li>
+          </ul>
+          <div class="audience-budget">Typical: $200 – $1,200</div>
+        </div>
+        <div class="audience-card reveal reveal-delay-3">
+          <div class="audience-tag">IT Pros & MSPs</div>
+          <div class="audience-title">Custom hardware, spec'd right</div>
+          <p class="audience-desc">We speak 1U. Custom rack mounts, cable management, Pi and UPS enclosures — built to your exact specs.</p>
+          <ul class="audience-examples">
+            <li>1U/2U/half-rack custom mounts</li>
+            <li>Cat6 strain relief & cable clips</li>
+            <li>AP & switch wall brackets</li>
+            <li>Branded client install hardware</li>
+          </ul>
+          <div class="audience-budget">Typical: $100 – $1,500</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about" class="section">
+    <div class="section-inner">
+      <div class="about-grid">
+        <div class="about-visual reveal">
+          <div class="about-visual-label">shop photography</div>
+          <div style="font-size:11px;color:#a09e97;margin-top:4px;font-family:monospace;">printers + workspace</div>
+        </div>
+        <div class="about-body reveal reveal-delay-1">
+          <div>
+            <div class="section-label">About</div>
+            <h2 class="section-title">CAD-native.<br/>Neighbor-built.</h2>
+          </div>
+          <div class="about-callout">
+            "Big additive manufacturers will not print one bracket. Hobbyists cannot engineer a real solution. We do both — for a quarter of the lead time."
+          </div>
+          <p>Luvet Labs started with a simple observation: the Twin Cities has world-class industrial 3D printing — <strong>Stratasys is literally headquartered here</strong> — but almost nowhere for a regular person, a small business, or a solo inventor to get one weird part made well, quickly, and at a fair price.</p>
+          <p>The shop is run by an IT professional and CAD designer who grew up in New Orleans and now calls the Twin Cities home. <strong>Every part we make is one we'd be proud to put in our own home.</strong></p>
+          <div class="about-chips">
+            <span class="chip">Fusion 360</span>
+            <span class="chip">Bambu P1S × 3</span>
+            <span class="chip">AMS Multi-Material</span>
+            <span class="chip">Twin Cities Local</span>
+            <span class="chip">Nationwide Shipping</span>
+            <span class="chip">24-hr Quote</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <div id="cta">
+    <div class="cta-inner">
+      <div class="reveal">
+        <div class="cta-label">Start a Project</div>
+        <div class="cta-headline">Got a weird job?<br/>We love those.</div>
+        <div class="cta-sub">Quote within 24 hours. Real human on every project. No minimum order.</div>
+      </div>
+      <div class="cta-actions reveal reveal-delay-1">
+        <a href="#contact" class="btn-amber">
+          Get a Quote
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 8h10M9 4l4 4-4 4"/>
+          </svg>
+        </a>
+        <div class="cta-note">No files needed to get started</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="contact-grid">
+      <div class="contact-info reveal">
+        <div>
+          <div class="section-label">Get in Touch</div>
+          <h2 class="section-title" style="font-size:clamp(26px,2.8vw,36px);">Send us a photo.<br/>We'll handle the rest.</h2>
+        </div>
+        <div class="contact-item">
+          <div class="contact-item-label">Email</div>
+          <div class="contact-item-value"><a href="mailto:hello@luvetlabs.com">hello@luvetlabs.com</a></div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-item-label">Location</div>
+          <div class="contact-item-value">
+            St. Paul, Minnesota<br/>
+            <span style="font-size:14px;font-weight:500;color:var(--stone);">Nationwide shipping available</span>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-item-label">Quote turnaround</div>
+          <div class="contact-item-value">Within 24 hours</div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-item-label">Typical delivery</div>
+          <div class="contact-item-value">3–7 days from approval</div>
+        </div>
+      </div>
+      <div class="reveal reveal-delay-1">
+        <form class="form" id="contact-form">
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="name">Name</label>
+              <input class="form-input" type="text" id="name" placeholder="Your name" />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="email">Email</label>
+              <input class="form-input" type="email" id="email" placeholder="you@example.com" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="project-type">Project type</label>
+            <select class="form-select" id="project-type">
+              <option value="">Select a category...</option>
+              <option>Repair Part</option>
+              <option>Inventor Prototype</option>
+              <option>IT / Homelab Hardware</option>
+              <option>Small Batch Run</option>
+              <option>CAD Design Only</option>
+              <option>Something Else</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="message">Tell us about the project</label>
+            <textarea class="form-textarea" id="message" placeholder="Describe the part or project. What's broken, what do you need, what dimensions matter? Don't worry about being technical — we'll ask the right questions."></textarea>
+          </div>
+          <button type="submit" class="form-submit">Send Request →</button>
+          <div class="form-success" id="form-success">
+            Got it — we'll review your project and reply within 24 hours. Check your inbox (and spam, just in case).
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-logo">
+        <div class="footer-monogram">LL</div>
+        <span class="footer-wordmark">LUVET <span>·</span> LABS</span>
+      </div>
+      <div class="footer-links">
+        <a href="#services">Services</a>
+        <a href="#process">Process</a>
+        <a href="#about">About</a>
+        <a href="mailto:hello@luvetlabs.com">hello@luvetlabs.com</a>
+      </div>
+      <div class="footer-meta">© 2026 Luvet Labs · St. Paul, MN</div>
+    </div>
+  </footer>
+
+  <script>
+    // ── NAV SCROLL ──
+    const nav = document.getElementById('main-nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 32);
+    });
+
+    // ── SCROLL REVEAL ──
+    const revealEls = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    revealEls.forEach(el => observer.observe(el));
+
+    // ── CONTACT FORM ──
+    const form = document.getElementById('contact-form');
+    const success = document.getElementById('form-success');
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const submit = form.querySelector('.form-submit');
+      submit.textContent = 'Sending...';
+      submit.disabled = true;
+      setTimeout(() => {
+        submit.style.display = 'none';
+        success.classList.add('visible');
+      }, 900);
+    });
+
+    // ── SMOOTH NAV ──
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
+        const target = document.querySelector(a.getAttribute('href'));
+        if (target) {
+          e.preventDefault();
+          const top = target.getBoundingClientRect().top + window.scrollY - 64;
+          window.scrollTo({ top, behavior: 'smooth' });
+        }
+      });
+    });
+  </script>
+</body>
+</html>
