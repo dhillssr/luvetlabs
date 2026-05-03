@@ -1320,7 +1320,7 @@
         </div>
       </div>
       <div class="reveal reveal-delay-1">
-        <form class="form" id="contact-form">
+        <form class="form" id="contact-form" action="https://formspree.io/f/mykoezej" method="POST" enctype="multipart/form-data">
           <div class="form-row">
             <div class="form-group">
               <label class="form-label" for="name">Name</label>
@@ -1350,7 +1350,7 @@
           <div class="form-group">
             <label class="form-label">Photos <span style="font-weight:400;color:var(--stone-light);">— optional, up to 5</span></label>
             <div class="file-upload-area" id="file-upload-area">
-              <input type="file" id="photo-upload" accept="image/*" multiple />
+              <input type="file" id="photo-upload" name="upload" accept="image/*" multiple />
               <svg class="file-upload-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/>
               </svg>
@@ -1498,7 +1498,7 @@
       submit.disabled = true;
 
       const data = new FormData(form);
-      selectedFiles.forEach(file => data.append('photo', file));
+      selectedFiles.forEach(file => data.append('upload', file));
 
       try {
         const res = await fetch('https://formspree.io/f/mykoezej', {
@@ -1510,9 +1510,11 @@
           submit.style.display = 'none';
           success.classList.add('visible');
         } else {
+          const body = await res.json().catch(() => ({}));
+          const msg = body.error || (body.errors && body.errors.map(e => e.message).join(', ')) || 'Unknown error';
           submit.textContent = 'Send Request →';
           submit.disabled = false;
-          alert('Something went wrong — please try again or email us directly at hello@luvetlabs.com');
+          alert('Submission failed: ' + msg + '\n\nOr email us directly at hello@luvetlabs.com');
         }
       } catch {
         submit.textContent = 'Send Request →';
