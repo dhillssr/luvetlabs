@@ -584,28 +584,16 @@
       align-items: center;
     }
     .about-visual {
-      background: repeating-linear-gradient(
-        -45deg,
-        rgba(44,46,51,0.04),
-        rgba(44,46,51,0.04) 1px,
-        transparent 1px,
-        transparent 18px
-      );
       border-radius: 8px;
       aspect-ratio: 5/4;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      overflow: hidden;
       border: 1px solid rgba(44,46,51,0.08);
-      flex-direction: column;
-      gap: 8px;
     }
-    .about-visual-label {
-      font-size: 12px;
-      font-weight: 500;
-      color: var(--stone-light);
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
+    .about-visual img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
     }
     .about-body {
       display: flex;
@@ -1247,8 +1235,7 @@
     <div class="section-inner">
       <div class="about-grid">
         <div class="about-visual reveal">
-          <div class="about-visual-label">shop photography</div>
-          <div style="font-size:11px;color:#a09e97;margin-top:4px;font-family:monospace;">printers + workspace</div>
+          <img src="/img/img1.jpg" alt="Measuring a 3D printed part with digital calipers" />
         </div>
         <div class="about-body reveal reveal-delay-1">
           <div>
