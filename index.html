@@ -322,29 +322,15 @@
       width: 100%;
       max-width: 400px;
       aspect-ratio: 4/3;
-      background: repeating-linear-gradient(
-        45deg,
-        rgba(44,46,51,0.04),
-        rgba(44,46,51,0.04) 1px,
-        transparent 1px,
-        transparent 18px
-      );
       border-radius: 6px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      overflow: hidden;
       position: relative;
-      border: 1px solid rgba(44,46,51,0.1);
     }
-    .hero-visual-label {
-      font-family: var(--ff-body);
-      font-size: 12px;
-      font-weight: 500;
-      color: var(--stone);
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      text-align: center;
-      padding: 24px;
+    .hero-visual img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
     }
 
     /* ── SECTION WRAPPER ── */
@@ -1073,9 +1059,7 @@
     <div class="hero-right">
       <div style="width:100%;max-width:400px;position:relative;">
         <div class="hero-visual">
-          <div class="hero-visual-label">
-            product photography<br/>printed parts + workspace
-          </div>
+          <img src="/img/img2.jpg" alt="3D printer mid-print" />
         </div>
       </div>
     </div>
